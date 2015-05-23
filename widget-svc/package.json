@@ -1,0 +1,21 @@
+{
+  "name": "widget-svc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Tom",
+  "license": "ISC",
+  "dependencies": {
+    "@twilson63/palmetto-fire": "^1.0.3",
+    "memdown": "^1.0.0",
+    "pouchdb": "^3.5.0"
+  },
+  "engines": {
+    "npm": "^2.10.x"
+  }
+}
