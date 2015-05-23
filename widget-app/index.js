@@ -7,7 +7,8 @@ pf({
     subject: ['widget'],
     verb: ['*'],
     type: ['response']
-  }
+  },
+  sequence: 'now'
 }, function (err, ee) {
   svr = ee
 })
