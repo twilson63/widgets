@@ -28,6 +28,7 @@ require('angular').module('app', [])
         // }, 1000)
 
         svr.on('widget', 'all', 'response', function (res) {
+          console.log('beep')
           if (received) return
           if (res.object && res.object.rows) {
             var widgets = res.object.rows.map(function (r) { return r.doc })
@@ -38,6 +39,7 @@ require('angular').module('app', [])
           }
         })
         svr.emit('widget', 'all', 'request', {})
+
       },
       create: function (widget, cb) {
         svr.on('widget', 'create', 'response', function (resp) {
@@ -49,9 +51,10 @@ require('angular').module('app', [])
   })
   .controller('AppController', function ($scope, widgets) {
     function reload() {
+      console.log('reload - start')
       widgets.all(function (err, widgets) {
+        console.log('reload called')
         if (err) alert(err.message)
-        console.log(widgets)
         $scope.$apply(function () {
           $scope.widgets = widgets 
         })
@@ -65,7 +68,14 @@ require('angular').module('app', [])
       })
       $scope.widget = null
     }
-    reload() 
+    widgets.all(function (err, widgets) {
+      console.log('reload called')
+      if (err) alert(err.message)
+      $scope.$apply(function () {
+        $scope.widgets = widgets 
+      })
+    }) 
+    setTimeout(reload, 500)
   })
 
 
