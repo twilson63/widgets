@@ -1,19 +1,16 @@
 {
-  "name": "widget-svc",
+  "name": "widget-log",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
-    "@twilson63/palmetto-rmq": "^1.0.4",
-    "memdown": "^1.0.0",
-    "pouchdb": "^3.5.0"
+    "servicebus": "^1.0.15"
   },
   "engines": {
     "npm": "^2.10.x"
