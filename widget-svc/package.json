@@ -17,5 +17,10 @@
   },
   "engines": {
     "npm": "^2.10.x"
+  },
+  "config": {
+    "endpoint": "amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com",
+    "vhost": "rajztapw",
+    "app": "widgets"
   }
 }

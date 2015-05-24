@@ -1,31 +1,22 @@
 'use strict'
+var MODEL = 'widget'
 
 var PouchDB = require('pouchdb')
 var db = new PouchDB('widgets', {db: require('memdown')});
+
+// use rabbitmq adapter
 var pc = require('@twilson63/palmetto-rmq')
-var MODEL = 'widget'
+// create core
+var io = pc(require('./package.json').config)
 
-var config = {
-  endpoint: 'amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com',
-  vhost: 'rajztapw',
-  app: 'widgets',
-  subscription: {
-    subject: ['widget'],
-    type: ['request'],
-    verb: ['*']
-  }
-}
-
-var ee = pc(config)
-
-
-ee.on([MODEL, 'request', 'all'].join('/'), function (request) {
-  console.log(request)
+// all widgets
+io.on([MODEL, 'request', 'all'].join('/'), function (event) {
   var VERB = 'all'
   db.allDocs({ include_docs: true, startkey: MODEL, endkey: MODEL + '{}'})
     .then(function (docs) {
-      ee.emit('send', {
-        id: [MODEL, 'response', VERB].join('/'),
+      // send response
+      io.emit('send', {
+        to: event.from,
         subject: MODEL,
         verb: VERB,
         type: 'response',
@@ -34,12 +25,15 @@ ee.on([MODEL, 'request', 'all'].join('/'), function (request) {
     })
 })
 
-ee.on([MODEL,'request','get'].join('/'), function (request) {
+// get one widget by id
+io.on([MODEL,'request','get'].join('/'), function (event) {
   var VERB = 'get'
-  db.get(request._id)
+
+  db.get(event.object._id)
     .then(function (doc) {
-      ee.emit('send', {
-        id: [MODEL, 'response', VERB].join('/'),
+      // send response
+      io.emit('send', {
+        to: event.from,
         subject: MODEL,
         verb: VERB,
         type: 'response',
@@ -48,16 +42,17 @@ ee.on([MODEL,'request','get'].join('/'), function (request) {
     })
 })
 
-    // create vendor
-ee.on([MODEL,'request', 'create'].join('/'), function (data) {
+    // create widget
+io.on([MODEL,'request', 'create'].join('/'), function (event) {
   var VERB = 'create'
   // TODO: validate 
-  db.put(data.object, MODEL + '-' + (new Date()).toISOString())
+  db.put(event.object, MODEL + '-' + (new Date()).toISOString())
     .then(function (res) {
       console.log('got create and added to db')
       console.log(data)
-      ee.emit('send', {
-        id: [MODEL, 'response', VERB].join('/'),
+      // send response
+      io.emit('send', {
+        to: event.from,
         subject: MODEL,
         verb: VERB,
         type: 'response',
@@ -65,7 +60,8 @@ ee.on([MODEL,'request', 'create'].join('/'), function (data) {
       })
     })
     .catch(function (err) {
-      ee.emit('send', {
+      io.emit('send', {
+        to: event.from,
         subject: MODEL,
         verb: VERB,
         type: 'response',
