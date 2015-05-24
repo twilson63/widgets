@@ -18,7 +18,7 @@ require('angular').module('app', [])
         // }, 1000)
 
         socket.on(['widget', 'response', 'all'].join('/'), function (res) {
-          console.log(res)
+          //console.log(res)
           //if (received) return
           if (res.object && res.object.rows) {
             var widgets = res.object.rows.map(function (r) { return r.doc })
@@ -55,9 +55,9 @@ require('angular').module('app', [])
   })
   .controller('AppController', function ($scope, widgets) {
     function reload() {
-      console.log('reload - start')
+      //console.log('reload - start')
       widgets.all(function (err, widgets) {
-        console.log('reload called')
+        //console.log('reload called')
         if (err) alert(err.message)
         $scope.$apply(function () {
           $scope.widgets = widgets 
@@ -80,7 +80,7 @@ require('angular').module('app', [])
     //   })
     // }) 
     socket.once('connect', function() {
-      console.log('connected')
+      //console.log('connected')
       reload()
     })
   })

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "w3 ${PORT} --directory public",
+    "start": "node server.js",
     "build": "browserify index.js -o bundle.js",
     "dev": "wzrd index.js"
   },
