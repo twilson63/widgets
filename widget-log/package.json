@@ -10,14 +10,14 @@
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
+    "follow": "^0.12.1",
     "servicebus": "^1.0.15"
   },
   "engines": {
     "npm": "^2.10.x"
   },
   "config": {
-    "endpoint": "amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com",
-    "vhost": "rajztapw",
-    "app": "widgets"
+    "endpoint": "https://tinylog.iriscouch.com",
+    "app": "tinylog"
   }
 }

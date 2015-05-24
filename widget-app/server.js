@@ -6,7 +6,7 @@ var io = require('socket.io')(server)
 
 server.listen(process.env.PORT || 9966)
 
-var palmetto = require('@twilson63/palmetto-rmq')
+var palmetto = require('@twilson63/palmetto-couchdb')
 var config = require('./package.json').config
 var ee = palmetto(config)
 

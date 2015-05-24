@@ -11,7 +11,7 @@
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
-    "@twilson63/palmetto-rmq": "^1.0.4",
+    "@twilson63/palmetto-couchdb": "^1.0.3",
     "memdown": "^1.0.0",
     "pouchdb": "^3.5.0"
   },
@@ -19,8 +19,7 @@
     "npm": "^2.10.x"
   },
   "config": {
-    "endpoint": "amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com",
-    "vhost": "rajztapw",
-    "app": "widgets"
+    "endpoint": "http://tinylog.iriscouch.com",
+    "app": "tinylog"
   }
 }
