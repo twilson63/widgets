@@ -1,21 +1,10 @@
-var pf = require('@twilson63/palmetto-fire')
-var svr = null
-
-pf({
-  endpoint: 'https://tinylog.firebaseio.com/',
-  subscription: {
-    subject: ['widget'],
-    verb: ['*'],
-    type: ['response']
-  },
-  sequence: 'now'
-}, function (err, ee) {
-  svr = ee
-})
-
+var io = require('socket.io-client')
+console.log(window.location.href)
+var socket = io(window.location.href)
 
 require('angular').module('app', [])
   .factory('widgets', function () {
+    
     return {
       all: function (cb) {
         var received = false
@@ -27,9 +16,9 @@ require('angular').module('app', [])
         //   }
         // }, 1000)
 
-        svr.on('widget', 'all', 'response', function (res) {
-          console.log('beep')
-          if (received) return
+        socket.on(['widget', 'response', 'all'].join('/'), function (res) {
+          console.log(res)
+          //if (received) return
           if (res.object && res.object.rows) {
             var widgets = res.object.rows.map(function (r) { return r.doc })
             cb(null, widgets)    
@@ -38,14 +27,28 @@ require('angular').module('app', [])
             cb(null)
           }
         })
-        svr.emit('widget', 'all', 'request', {})
+        socket.emit('send', {
+          id: 'widget/request/all',
+          res: 'widget/response/all',
+          subject: 'widget',
+          type: 'request',
+          verb: 'all',
+          object: {}
+        })
 
       },
       create: function (widget, cb) {
-        svr.on('widget', 'create', 'response', function (resp) {
+        socket.on(['widget', 'response', 'create'].join('/'), function (resp) {
           cb(resp.object)
         })
-        svr.emit('widget', 'create', 'request', widget)
+        socket.emit('send', {
+          id: 'widget/request/create',
+          res: 'widget/response/create',
+          subject: 'widget',
+          type: 'request',
+          verb: 'create',
+          object: widget
+        })
       }
     }
   })
@@ -68,14 +71,17 @@ require('angular').module('app', [])
       })
       $scope.widget = null
     }
-    widgets.all(function (err, widgets) {
-      console.log('reload called')
-      if (err) alert(err.message)
-      $scope.$apply(function () {
-        $scope.widgets = widgets 
-      })
-    }) 
-    setTimeout(reload, 500)
+    // widgets.all(function (err, widgets) {
+    //   console.log('reload called')
+    //   if (err) alert(err.message)
+    //   $scope.$apply(function () {
+    //     $scope.widgets = widgets 
+    //   })
+    // }) 
+    socket.once('connect', function() {
+      console.log('connected')
+      reload()
+    })
   })
 
 

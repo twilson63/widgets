@@ -2,12 +2,13 @@
 
 var PouchDB = require('pouchdb')
 var db = new PouchDB('widgets', {db: require('memdown')});
-var pc = require('@twilson63/palmetto-couchdb')
+var pc = require('@twilson63/palmetto-rmq')
 var MODEL = 'widget'
 
 var config = {
-  endpoint: 'https://tinylog.iriscouch.com/tinylog',
-  since: 'now',
+  endpoint: 'amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com',
+  vhost: 'rajztapw',
+  app: 'widgets',
   subscription: {
     subject: ['widget'],
     type: ['request'],
@@ -18,25 +19,29 @@ var config = {
 var ee = pc(config)
 
 
-ee.on([MODEL, 'all','request'].join('/'), function (request) {
-
+ee.on([MODEL, 'request', 'all'].join('/'), function (request) {
+  console.log(request)
+  var VERB = 'all'
   db.allDocs({ include_docs: true, startkey: MODEL, endkey: MODEL + '{}'})
     .then(function (docs) {
       ee.emit('send', {
+        id: [MODEL, 'response', VERB].join('/'),
         subject: MODEL,
-        verb: 'all',
+        verb: VERB,
         type: 'response',
         object: docs
       })
     })
 })
 
-ee.on([MODEL, 'get','request'].join('/'), function (request) {
+ee.on([MODEL,'request','get'].join('/'), function (request) {
+  var VERB = 'get'
   db.get(request._id)
     .then(function (doc) {
       ee.emit('send', {
+        id: [MODEL, 'response', VERB].join('/'),
         subject: MODEL,
-        verb: 'get',
+        verb: VERB,
         type: 'response',
         object: doc
       })
@@ -44,15 +49,17 @@ ee.on([MODEL, 'get','request'].join('/'), function (request) {
 })
 
     // create vendor
-ee.on([MODEL,'create', 'request'].join('/'), function (data) {
+ee.on([MODEL,'request', 'create'].join('/'), function (data) {
+  var VERB = 'create'
   // TODO: validate 
   db.put(data.object, MODEL + '-' + (new Date()).toISOString())
     .then(function (res) {
       console.log('got create and added to db')
-      console.log(vendor)
+      console.log(data)
       ee.emit('send', {
+        id: [MODEL, 'response', VERB].join('/'),
         subject: MODEL,
-        verb: 'create',
+        verb: VERB,
         type: 'response',
         object: res
       })
@@ -60,7 +67,7 @@ ee.on([MODEL,'create', 'request'].join('/'), function (data) {
     .catch(function (err) {
       ee.emit('send', {
         subject: MODEL,
-        verb: 'create',
+        verb: VERB,
         type: 'response',
         object: err
       })
@@ -89,4 +96,4 @@ ee.on([MODEL,'create', 'request'].join('/'), function (data) {
 
 require('http').createServer(function (req, res) {
   res.end('OK')
-}).listen(process.env.PORT || 3000)
+}).listen(process.env.PORT || 3001)
