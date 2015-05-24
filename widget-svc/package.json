@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@twilson63/palmetto-couchdb": "^1.0.3",
+    "@twilson63/palmetto-fire": "^1.0.8",
     "memdown": "^1.0.0",
     "pouchdb": "^3.5.0"
   },
@@ -21,5 +22,9 @@
   "config": {
     "endpoint": "http://tinylog.iriscouch.com",
     "app": "tinylog"
+  },
+  "config-fire": {
+    "endpoint": "https://tinylog.firebaseio.com/",
+    "app": "widgets"
   }
 }

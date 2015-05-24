@@ -5,9 +5,9 @@ var PouchDB = require('pouchdb')
 var db = new PouchDB('widgets', {db: require('memdown')});
 
 // use rabbitmq adapter
-var palmetto = require('@twilson63/palmetto-couchdb')
+var palmetto = require('@twilson63/palmetto-fire')
 // create core
-var io = palmetto(require('./package.json').config)
+var io = palmetto(require('./package.json')['config-fire'])
 
 // all widgets
 io.on([MODEL, 'request', 'all'].join('/'), function (event) {

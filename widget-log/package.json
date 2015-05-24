@@ -19,5 +19,9 @@
   "config": {
     "endpoint": "https://tinylog.iriscouch.com",
     "app": "tinylog"
+  },
+  "config-fire": {
+    "endpoint": "https://tinylog.firebaseio.com/",
+    "app": "widgets"
   }
 }
