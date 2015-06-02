@@ -6,13 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "build": "browserify index.js -o bundle.js"
+    "build": "browserify index.js -o public/bundle.js"
   },
   "keywords": [],
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
-    "@twilson63/palmetto-rmq": "^1.0.3",
+    "@akennedy/palmetto-redis": "^1.0.3",
     "angular": "^1.3.15",
     "domify": "^1.3.3",
     "ecstatic": "^0.8.0",
@@ -25,8 +25,10 @@
     "npm": "^2.10.x"
   },
   "config": {
-    "endpoint": "amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com",
-    "vhost": "rajztapw",
+    "endpoint": "http://127.0.0.1:6379",
     "app": "widgets"
+  },
+  "devDependencies": {
+    "browserify": "^10.2.3"
   }
 }
