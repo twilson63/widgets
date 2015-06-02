@@ -11,7 +11,7 @@
   "author": "Tom",
   "license": "ISC",
   "dependencies": {
-    "@twilson63/palmetto-rmq": "^1.0.3",
+    "@akennedy/palmetto-redis": "^1.0.3",
     "memdown": "^1.0.0",
     "pouchdb": "^3.5.0"
   },
@@ -19,8 +19,7 @@
     "npm": "^2.10.x"
   },
   "config": {
-    "endpoint": "amqp://rajztapw:XM2DnCXtrALDZbbNwEw8TCYjTjCitHb7@owl.rmq.cloudamqp.com",
-    "vhost": "rajztapw",
+    "endpoint": "http://127.0.0.1:6379",
     "app": "widgets"
   }
 }

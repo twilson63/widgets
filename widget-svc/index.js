@@ -5,7 +5,7 @@ var PouchDB = require('pouchdb')
 var db = new PouchDB('widgets', {db: require('memdown')});
 
 // use rabbitmq adapter
-var pc = require('@twilson63/palmetto-rmq')
+var pc = require('@akennedy/palmetto-redis')
 // create core
 var io = pc(require('./package.json').config)
 
